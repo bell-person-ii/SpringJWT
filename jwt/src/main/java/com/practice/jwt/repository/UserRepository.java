@@ -22,6 +22,11 @@ public class UserRepository {
     public User findByUserName(String name){
         List<User> users = em.createQuery("select u from  User u where u.name =:name")
                 .setParameter("name",name).getResultList();
+
+        if(users.size() ==0){
+            return null;
+        }
+
         return users.get(0);
     }
 }
