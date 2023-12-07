@@ -7,6 +7,7 @@ import com.practice.jwt.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void join(String name, String password){
 
@@ -28,7 +30,7 @@ public class UserService {
         // 저장 객체 생성
         User user = User.builder()
                 .name(name)
-                .password(password)
+                .password(bCryptPasswordEncoder.encode(password)) // 유저가 입력한 암호를 인코딩하여 DB에 저장함
                 .build();
 
         userRepository.save(user);
